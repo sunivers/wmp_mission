@@ -11,7 +11,7 @@
     <section>
       <div>
         <label for="url">URL</label>
-        <input type="text" id="url" />
+        <input type="text" id="url" placeholder="http://www.naver.com" />
       </div>
 
       <div>
@@ -55,13 +55,20 @@
       const unit = $inputUnit.value;
       const data = { url, type, unit };
       axios
-        .post('/api/url', data)
+        .post('/api/submit', data)
         .then(res => {
           const data = res.data;
-          $quotient.innerText = data.quotient;
-          $remainder.innerText = data.remainder;
+          if (data.status === 'suc') {
+            $quotient.innerText = data.quotient;
+            $remainder.innerText = data.remainder;
+          } else {
+            throw new Error();
+          }
         })
-        .catch(error => console.log(error));
+        .catch(error => {
+          console.log(error);
+          alert('데이터를 불러오는 데에 실패했습니다.');
+        });
     };
   </script>
 </html>
